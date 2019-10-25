@@ -80,7 +80,7 @@ var SlideDisplay = React.createClass({
     }
 });
 
-var Slideshow = React.createClass({
+var Adventure = React.createClass({
     getInitialState: function() {
         return {
             'currentSlide': 0
@@ -124,6 +124,6 @@ var Slideshow = React.createClass({
 });
 
 ReactDOM.render(
-    <Slideshow />,
+    <Adventure />,
     document.getElementById('slideshow')
 );
