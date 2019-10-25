@@ -1,0 +1,27 @@
+{
+  "name": "react-adventure",
+  "version": "0.0.1",
+  "description": "Adventure game framework",
+  "main": "adventure.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikolas/react-adventure.git"
+  },
+  "keywords": [
+    "adventure",
+    "game"
+  ],
+  "author": "Nikolas Nyby",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/nikolas/react-adventure/issues"
+  },
+  "homepage": "https://github.com/nikolas/react-adventure#readme",
+  "dependencies": {
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
+  }
+}
