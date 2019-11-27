@@ -124,6 +124,7 @@ export default class AdventureView extends React.Component {
         return (
             <div className="adventure"
                  onKeyPress={this.handleKeyDown}>
+                {this.props.items}
             </div>
         );
     }

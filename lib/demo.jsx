@@ -11,31 +11,22 @@ class Main extends React.Component {
         };
     }
     render() {
+        const items = [
+            <Item />
+        ];
         return (
             <div className="col-sm-6">
                 <div className="text-center">
-                    <AdventureView>
-                        <Item />
-                    </AdventureView>
+                    <AdventureView
+                    items={items}
+                    />
                 </div>
-                <input
-                    type="range"
-                    className="form-control-range"
-                    name="moonPhase"
-                    min={-Math.PI}
-                    max={Math.PI}
-                    step={0.01}
-                    value={this.state.moonPhase}
-                    onChange={this.handleInputChange.bind(this)} />
             </div>
         );
     }
     handleInputChange(event) {
         const target = event.target;
         const name = target.name;
-    }
-    onMoonPhaseUpdate(phase) {
-        this.setState({moonPhase: phase});
     }
 }
 
