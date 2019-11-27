@@ -82,6 +82,13 @@ export class SlideDisplay extends React.Component {
     }
 };
 
+export class Item extends React.Component {
+    render() {
+        return <div className="adv-item"
+                    height="20" width="20"></div>;
+    }
+};
+
 export default class AdventureView extends React.Component {
     constructor(props) {
         super(props);
@@ -115,12 +122,8 @@ export default class AdventureView extends React.Component {
     }
     render() {
         return (
-            <div className="slideshow" onKeyPress={this.handleKeyDown}>
-                <SlideDisplay
-                    slides={slides}
-                    currentSlide={this.state.currentSlide} />
-                <PrevButton slideshow={this} />
-                <NextButton slideshow={this}  />
+            <div className="adventure"
+                 onKeyPress={this.handleKeyDown}>
             </div>
         );
     }

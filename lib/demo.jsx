@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AdventureView from './index';
+import AdventureView from './AdventureView';
+import Item from './Item';
 
 class Main extends React.Component {
     constructor(props) {
@@ -13,9 +14,9 @@ class Main extends React.Component {
         return (
             <div className="col-sm-6">
                 <div className="text-center">
-                    <AdventureView
-                        moonPhase={this.state.moonPhase}
-                        onMoonPhaseUpdate={this.onMoonPhaseUpdate.bind(this)} />
+                    <AdventureView>
+                        <Item />
+                    </AdventureView>
                 </div>
                 <input
                     type="range"
