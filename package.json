@@ -5,7 +5,8 @@
   "main": "build/index.jsx",
   "scripts": {
     "dev": "webpack --mode development --watch",
-    "build": "webpack --mode production",
+    "build": "babel lib -d build",
+    "build-demo": "webpack --mode production",
     "eslint": "eslint lib/*.js lib/*.jsx"
   },
   "repository": {
@@ -27,6 +28,14 @@
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "babel-loader": "^8.0.6",
     "webpack": "^4.41.2"
+  },
+  "babel": {
+    "presets": [
+      "@babel/env",
+      "@babel/react"
+    ]
   }
 }
