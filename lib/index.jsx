@@ -1,4 +1,6 @@
-var slides = [
+import React from 'react';
+
+const slides = [
     {
         'img': 'img/1.png'
     },
@@ -23,9 +25,9 @@ var slides = [
 ];
 
 
-var PrevButton = React.createClass({
-    render: function() {
-        var disabled = false;
+export class PrevButton extends React.Component {
+    render() {
+        let disabled = false;
         if (this.props.slideshow.state.currentSlide <= 0) {
             disabled = true;
         }
@@ -38,15 +40,15 @@ var PrevButton = React.createClass({
                  String.fromCharCode(8612)}
             </button>
         );
-    },
-    handleClick: function(e) {
+    }
+    handleClick(e) {
         this.props.slideshow.prevSlide();
     }
-});
+};
 
-var NextButton = React.createClass({
-    render: function() {
-        var disabled = false;
+export class NextButton extends React.Component {
+    render() {
+        let disabled = false;
         if (this.props.slideshow.state.currentSlide >= slides.length - 1) {
             disabled = true;
         }
@@ -59,15 +61,15 @@ var NextButton = React.createClass({
                  String.fromCharCode(8614)}
             </button>
         );
-    },
-    handleClick: function(e) {
+    }
+    handleClick(e) {
         this.props.slideshow.nextSlide();
     }
-});
+};
 
-var SlideDisplay = React.createClass({
-    render: function() {
-        var slide = this.props.slides[this.props.currentSlide];
+export class SlideDisplay extends React.Component {
+    render() {
+        let slide = this.props.slides[this.props.currentSlide];
         return (
             <div className="slide">
                 <div className="img"
@@ -78,39 +80,40 @@ var SlideDisplay = React.createClass({
             </div>
         );
     }
-});
+};
 
-var Adventure = React.createClass({
-    getInitialState: function() {
-        return {
-            'currentSlide': 0
+export default class AdventureView extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentSlide: 0
         };
-    },
-    prevSlide: function() {
-        var newSlide = this.state.currentSlide;
+    }
+    prevSlide() {
+        let newSlide = this.state.currentSlide;
         if (this.state['currentSlide'] > 0) {
             newSlide = newSlide - 1;
         }
         this.setState({'currentSlide': newSlide});
-    },
-    nextSlide: function() {
-        var newSlide = this.state.currentSlide;
+    }
+    nextSlide() {
+        let newSlide = this.state.currentSlide;
         if (this.state.currentSlide < slides.length - 1) {
             newSlide = newSlide + 1;
         }
         this.setState({'currentSlide': newSlide});
-    },
-    componentWillMount: function() {
+    }
+    componentWillMount() {
         document.addEventListener('keydown', this.handleKeyDown, false);
-    },
-    handleKeyDown: function(e) {
+    }
+    handleKeyDown(e) {
         if (e.keyCode === 37) {
             this.prevSlide();
         } else if (e.keyCode === 39) {
             this.nextSlide();
         }
-    },
-    render: function() {
+    }
+    render() {
         return (
             <div className="slideshow" onKeyPress={this.handleKeyDown}>
                 <SlideDisplay
@@ -121,9 +124,4 @@ var Adventure = React.createClass({
             </div>
         );
     }
-});
-
-ReactDOM.render(
-    <Adventure />,
-    document.getElementById('slideshow')
-);
+};
