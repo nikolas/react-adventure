@@ -6,25 +6,37 @@ import Item from './Item';
 class Main extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            moonPhase: -1
-        };
+        this.state = {};
     }
     render() {
+        const click = function() {
+            const things = [
+                'pumkin spice coffee',
+                'a santa hat',
+                'a christmas tree',
+                'a game gear with the lion king game that\'s really hard!!!'
+            ];
+
+            // lel copy and paste from stack overflow FML
+            const randomThing = things[
+                Math.floor(Math.random() * things.length)];
+
+
+            const msg = `lele hi :))))) I am ${randomThing}. Ask me anything :)`;
+            console.log(msg);
+            alert(msg);
+        };
         const items = [
-            <Item />
+            <Item key={0} onClick={click} />
         ];
         return (
-            <div className="col-sm-6">
-                <div className="text-center">
-                    <AdventureView
-                    items={items}
-                    />
-                </div>
+            <div className="col">
+                <AdventureView
+                    items={items} />
             </div>
         );
     }
-    handleInputChange(event) {
+    handleItemClick(event) {
         const target = event.target;
         const name = target.name;
     }

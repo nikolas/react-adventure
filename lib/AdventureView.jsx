@@ -1,29 +1,5 @@
 import React from 'react';
 
-const slides = [
-    {
-        'img': 'img/1.png'
-    },
-    {
-        'img': 'img/2.png'
-    },
-    {
-        'img': 'img/3.png'
-    },
-    {
-        'img': 'img/4.png'
-    },
-    {
-        'img': 'img/51.png'
-    },
-    {
-        'img': 'img/5.png'
-    },
-    {
-        'img': 'img/6.png'
-    }
-];
-
 
 export class PrevButton extends React.Component {
     render() {
@@ -49,9 +25,6 @@ export class PrevButton extends React.Component {
 export class NextButton extends React.Component {
     render() {
         let disabled = false;
-        if (this.props.slideshow.state.currentSlide >= slides.length - 1) {
-            disabled = true;
-        }
         return (
             <button disabled={disabled}
                     className="next"
@@ -93,24 +66,12 @@ export default class AdventureView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentSlide: 0
+            currentSlide: 0,
         };
+
+        this.time = 0;
     }
-    prevSlide() {
-        let newSlide = this.state.currentSlide;
-        if (this.state['currentSlide'] > 0) {
-            newSlide = newSlide - 1;
-        }
-        this.setState({'currentSlide': newSlide});
-    }
-    nextSlide() {
-        let newSlide = this.state.currentSlide;
-        if (this.state.currentSlide < slides.length - 1) {
-            newSlide = newSlide + 1;
-        }
-        this.setState({'currentSlide': newSlide});
-    }
-    componentWillMount() {
+    componentDidMount() {
         document.addEventListener('keydown', this.handleKeyDown, false);
     }
     handleKeyDown(e) {
@@ -120,9 +81,23 @@ export default class AdventureView extends React.Component {
             this.nextSlide();
         }
     }
+    gameLoop() {
+        const me = this;
+
+        setInterval(function() {
+            moveSomethingOnTheScreen(me.time);
+
+            time += 1;
+        }, 1000);
+
+    }
     render() {
         return (
             <div className="adventure"
+                 style={{
+                     width: '600px',
+                     height: '400px'
+                 }}
                  onKeyPress={this.handleKeyDown}>
                 {this.props.items}
             </div>
