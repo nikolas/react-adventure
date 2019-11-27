@@ -3,32 +3,38 @@ import ReactDOM from 'react-dom';
 import AdventureView from './AdventureView';
 import Item from './Item';
 
+const intro = [
+    'You walk into the grocery store, and start craving German rye bread.'
+];
+
 class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
-    render() {
-        const click = function() {
-            const things = [
-                'pumkin spice coffee',
-                'a santa hat',
-                'a christmas tree',
-                'a game gear with the lion king game that\'s really hard!!!'
-            ];
-
-            // lel copy and paste from stack overflow FML
-            const randomThing = things[
-                Math.floor(Math.random() * things.length)];
-
-
-            const msg = `lele hi :))))) I am ${randomThing}. Ask me anything :)`;
-            console.log(msg);
-            alert(msg);
-        };
-        const items = [
-            <Item key={0} onClick={click} />
+    getRandomThing() {
+        const things = [
+            'pumkin spice coffee',
+            'a santa hat',
+            'a christmas tree',
+            'a game gear with the lion king game that\'s really hard!!!'
         ];
+
+        return things[Math.floor(Math.random() * things.length)];
+    }
+    render() {
+        const click = function(e) {
+            console.log(e.name);
+        };
+        const items = [<Item key={0} />];
+
+        for (let i = 0; i < 5; i++) {
+            items.push(
+                <Item key={i + 1} name={this.getRandomThing()}
+                      onClick={click} />
+            );
+        }
+
         return (
             <div className="col">
                 <AdventureView
