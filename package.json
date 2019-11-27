@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/nikolas/react-adventure#readme",
   "dependencies": {
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0"
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   },
   "devDependencies": {
     "webpack": "^4.41.2"
