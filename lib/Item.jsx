@@ -7,14 +7,8 @@ export default class Item extends React.Component {
         const h = 30;
         return (
             <div className="adv-item"
-                 style={{
-                     backgroundColor: 'pink',
-                     width: w,
-                     height: h,
-                     cursor: 'pointer'
-                 }}
                  width={w} height={h}
-                onClick={this.props.onClick}>
+                 onClick={this.props.onClick}>
                 {this.props.name}
             </div>
         );
