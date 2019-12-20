@@ -1,59 +1,6 @@
 import React from 'react';
+import * as PIXI from 'pixi.js';
 
-
-export class PrevButton extends React.Component {
-    render() {
-        let disabled = false;
-        if (this.props.slideshow.state.currentSlide <= 0) {
-            disabled = true;
-        }
-        return (
-            <button disabled={disabled}
-                    className="prev"
-                    onClick={this.handleClick}>
-                {disabled ?
-                 String.fromCharCode(8602) :
-                 String.fromCharCode(8612)}
-            </button>
-        );
-    }
-    handleClick(e) {
-        this.props.slideshow.prevSlide();
-    }
-};
-
-export class NextButton extends React.Component {
-    render() {
-        let disabled = false;
-        return (
-            <button disabled={disabled}
-                    className="next"
-                    onClick={this.handleClick}>
-                {disabled ?
-                 String.fromCharCode(8603) :
-                 String.fromCharCode(8614)}
-            </button>
-        );
-    }
-    handleClick(e) {
-        this.props.slideshow.nextSlide();
-    }
-};
-
-export class SlideDisplay extends React.Component {
-    render() {
-        let slide = this.props.slides[this.props.currentSlide];
-        return (
-            <div className="slide">
-                <div className="img"
-                     style={{
-                         backgroundImage: 'url(' + slide.img + ')',
-                         height: window.innerHeight
-                     }} />
-            </div>
-        );
-    }
-};
 
 export class Item extends React.Component {
     render() {
@@ -69,17 +16,23 @@ export default class AdventureView extends React.Component {
             currentSlide: 0,
         };
 
+        this.app = new PIXI.Application();
+
         this.time = 0;
     }
     componentDidMount() {
+        this.el.appendChild(this.app.view);
+
+        const me = this;
+        this.props.items.forEach(function(item) {
+            const circle = new PIXI.Circle(10, 10, 10);
+            console.log(item, circle);
+            //me.app.stage.addChild(circle);
+        });
+
         document.addEventListener('keydown', this.handleKeyDown, false);
     }
     handleKeyDown(e) {
-        if (e.keyCode === 37) {
-            this.prevSlide();
-        } else if (e.keyCode === 39) {
-            this.nextSlide();
-        }
     }
     gameLoop() {
         const me = this;
@@ -94,12 +47,12 @@ export default class AdventureView extends React.Component {
     render() {
         return (
             <div className="adventure"
+                 ref={(thisDiv) => {this.el = thisDiv}}
                  style={{
                      width: '600px',
                      height: '400px'
                  }}
                  onKeyPress={this.handleKeyDown}>
-                {this.props.items}
             </div>
         );
     }
