@@ -46,26 +46,23 @@ function (_React$Component) {
   }
 
   _createClass(Main, [{
-    key: "getRandomThing",
-    value: function getRandomThing() {
-      var things = ['pumkin spice coffee', 'a santa hat', 'a christmas tree'];
-      return things[Math.floor(Math.random() * things.length)];
-    }
-  }, {
     key: "render",
     value: function render() {
       var click = function click(e) {
         console.log(e.name);
       };
 
-      var items = [];
-
-      for (var i = 0; i < 5; i++) {
-        items.push({
-          name: this.getRandomThing()
-        });
-      }
-
+      var items = [{
+        name: 'A'
+      }, {
+        name: 'B'
+      }, {
+        name: 'A'
+      }, {
+        name: 'B'
+      }, {
+        name: 'A'
+      }];
       return _react["default"].createElement("div", {
         className: "col"
       }, _react["default"].createElement(_AdventureView["default"], {

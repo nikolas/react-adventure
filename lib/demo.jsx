@@ -12,26 +12,27 @@ class Main extends React.Component {
         super(props);
         this.state = {};
     }
-    getRandomThing() {
-        const things = [
-            'pumkin spice coffee',
-            'a santa hat',
-            'a christmas tree',
-        ];
-
-        return things[Math.floor(Math.random() * things.length)];
-    }
     render() {
         const click = function(e) {
             console.log(e.name);
         };
-        const items = [];
-
-        for (let i = 0; i < 5; i++) {
-            items.push({
-                name: this.getRandomThing()
-            });
-        }
+        const items = [
+            {
+                name: 'A'
+            },
+            {
+                name: 'B'
+            },
+            {
+                name: 'A'
+            },
+            {
+                name: 'B'
+            },
+            {
+                name: 'A'
+            }
+        ];
 
         return (
             <div className="col">

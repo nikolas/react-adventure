@@ -2,14 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as PIXI from 'pixi.js';
 
-
-export class Item extends React.Component {
-    render() {
-        return <div className="adv-item"
-                    height="20" width="20"></div>;
-    }
-};
-
 export default class AdventureView extends React.Component {
     constructor(props) {
         super(props);
@@ -20,21 +12,38 @@ export default class AdventureView extends React.Component {
 
         this.time = 0;
     }
+    onButtonDown() {
+    }
+    onButtonUp() {
+        console.log('item clicked!');
+    }
+    onButtonOver() {
+        console.log('mouseover');
+    }
+    onButtonOut(e) {
+        console.log('mouseout', e);
+    }
     componentDidMount() {
         console.log('this.el', this.el);
         this.el.appendChild(this.app.view);
 
         const me = this;
+        let offset = 0;
         this.props.items.forEach(function(item) {
             const g = new PIXI.Graphics();
             g.interactive = true;
+            g.buttonMode = true;
             g.beginFill(0xFF3300);
-            g.drawCircle(Math.random() * 600,
-                         Math.random() * 800,
-                         Math.random() * 10);
+            g.drawCircle(20 + offset, 20, 10);
             g.endFill();
+            g.on('pointerdown', me.onButtonDown)
+                .on('pointerup', me.onButtonUp)
+                .on('pointerupoutside', me.onButtonUp)
+                .on('pointerover', me.onButtonOver)
+                .on('pointerout', me.onButtonOut);
 
             me.app.stage.addChild(g);
+            offset += 30;
         });
 
         document.addEventListener('keydown', this.handleKeyDown, false);

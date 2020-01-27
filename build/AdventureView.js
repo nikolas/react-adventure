@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.Item = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -35,38 +35,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var Item =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(Item, _React$Component);
-
-  function Item() {
-    _classCallCheck(this, Item);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Item).apply(this, arguments));
-  }
-
-  _createClass(Item, [{
-    key: "render",
-    value: function render() {
-      return _react["default"].createElement("div", {
-        className: "adv-item",
-        height: "20",
-        width: "20"
-      });
-    }
-  }]);
-
-  return Item;
-}(_react["default"].Component);
-
-exports.Item = Item;
-;
-
 var AdventureView =
 /*#__PURE__*/
-function (_React$Component2) {
-  _inherits(AdventureView, _React$Component2);
+function (_React$Component) {
+  _inherits(AdventureView, _React$Component);
 
   function AdventureView(props) {
     var _this;
@@ -82,18 +54,40 @@ function (_React$Component2) {
   }
 
   _createClass(AdventureView, [{
+    key: "onButtonDown",
+    value: function onButtonDown() {}
+  }, {
+    key: "onButtonUp",
+    value: function onButtonUp() {
+      console.log('item clicked!');
+    }
+  }, {
+    key: "onButtonOver",
+    value: function onButtonOver() {
+      console.log('mouseover');
+    }
+  }, {
+    key: "onButtonOut",
+    value: function onButtonOut(e) {
+      console.log('mouseout', e);
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       console.log('this.el', this.el);
       this.el.appendChild(this.app.view);
       var me = this;
+      var offset = 0;
       this.props.items.forEach(function (item) {
         var g = new PIXI.Graphics();
         g.interactive = true;
+        g.buttonMode = true;
         g.beginFill(0xFF3300);
-        g.drawCircle(Math.random() * 600, Math.random() * 800, Math.random() * 10);
+        g.drawCircle(20 + offset, 20, 10);
         g.endFill();
+        g.on('pointerdown', me.onButtonDown).on('pointerup', me.onButtonUp).on('pointerupoutside', me.onButtonUp).on('pointerover', me.onButtonOver).on('pointerout', me.onButtonOut);
         me.app.stage.addChild(g);
+        offset += 30;
       });
       document.addEventListener('keydown', this.handleKeyDown, false);
     }
