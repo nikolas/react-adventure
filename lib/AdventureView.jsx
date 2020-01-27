@@ -14,12 +14,15 @@ export default class AdventureView extends React.Component {
             isPlaying: false
         };
 
-        this.app = new PIXI.Application({
-            antialias: true
-        });
 
-        this.width = 800;
-        this.height = 600;
+        this.width = 640;
+        this.height = 480;
+
+        this.app = new PIXI.Application({
+            antialias: true,
+            width: this.width,
+            height: this.height
+        });
 
         this.time = 0;
 

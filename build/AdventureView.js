@@ -54,8 +54,8 @@ function (_React$Component) {
     _this.app = new PIXI.Application({
       antialias: true
     });
-    _this.width = 800;
-    _this.height = 600;
+    _this.width = 640;
+    _this.height = 480;
     _this.time = 0;
     _this.onTitleClick = _this.onTitleClick.bind(_assertThisInitialized(_this));
     return _this;
