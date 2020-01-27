@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom';
 import AdventureView from './AdventureView';
 import Item from './Item';
 
-const intro = [
-    'You walk into the grocery store, and start craving German rye bread.'
-];
-
 class Main extends React.Component {
     constructor(props) {
         super(props);

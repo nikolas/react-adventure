@@ -28,8 +28,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var intro = ['You walk into the grocery store, and start craving German rye bread.'];
-
 var Main =
 /*#__PURE__*/
 function (_React$Component) {

@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as PIXI from 'pixi.js';
 
+const intro = [
+    'You walk into the grocery store, and start craving German rye bread.'
+];
+
 export default class AdventureView extends React.Component {
     constructor(props) {
         super(props);
@@ -9,6 +13,9 @@ export default class AdventureView extends React.Component {
         this.app = new PIXI.Application({
             antialias: true
         });
+
+        this.width = 800;
+        this.height = 600;
 
         this.time = 0;
     }
@@ -27,6 +34,30 @@ export default class AdventureView extends React.Component {
         console.log('this.el', this.el);
         this.el.appendChild(this.app.view);
 
+        const textStyle = new PIXI.TextStyle({
+            fontFamily: 'Arial',
+            fontSize: 24,
+            fontWeight: 'bold',
+            fill: ['#ffffff', '#00ff99'], // gradient
+            stroke: '#4a1850',
+            strokeThickness: 5,
+            dropShadow: true,
+            dropShadowColor: '#000000',
+            dropShadowBlur: 4,
+            dropShadowAngle: Math.PI / 6,
+            dropShadowDistance: 6,
+            wordWrap: true,
+            wordWrapWidth: this.width - 40,
+        });
+
+        const text = new PIXI.Text(intro, textStyle);
+        text.buttonMode = true;
+        text.interactive = true;
+        text.x = 20;
+        text.y = 20;
+
+        this.app.stage.addChild(text);
+
         const me = this;
         let offset = 0;
         this.props.items.forEach(function(item) {
@@ -34,7 +65,7 @@ export default class AdventureView extends React.Component {
             g.interactive = true;
             g.buttonMode = true;
             g.beginFill(0xFF3300);
-            g.drawCircle(20 + offset, 20, 10);
+            g.drawCircle(30 + offset, me.height - 30, 20);
             g.endFill();
             g.on('pointerdown', me.onButtonDown)
                 .on('pointerup', me.onButtonUp)
@@ -43,7 +74,7 @@ export default class AdventureView extends React.Component {
                 .on('pointerout', me.onButtonOut);
 
             me.app.stage.addChild(g);
-            offset += 30;
+            offset += 50;
         });
 
         document.addEventListener('keydown', this.handleKeyDown, false);
@@ -65,8 +96,8 @@ export default class AdventureView extends React.Component {
             <div className="adventure"
                  ref={(thisDiv) => {this.el = thisDiv}}
                  style={{
-                     width: '600px',
-                     height: '800px'
+                     width: this.width + 'px',
+                     height: this.height + 'px'
                  }}
                  onKeyPress={this.handleKeyDown}>
             </div>

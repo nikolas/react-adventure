@@ -35,6 +35,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+var intro = ['You walk into the grocery store, and start craving German rye bread.'];
+
 var AdventureView =
 /*#__PURE__*/
 function (_React$Component) {
@@ -49,6 +51,8 @@ function (_React$Component) {
     _this.app = new PIXI.Application({
       antialias: true
     });
+    _this.width = 800;
+    _this.height = 600;
     _this.time = 0;
     return _this;
   }
@@ -76,6 +80,28 @@ function (_React$Component) {
     value: function componentDidMount() {
       console.log('this.el', this.el);
       this.el.appendChild(this.app.view);
+      var textStyle = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 24,
+        fontWeight: 'bold',
+        fill: ['#ffffff', '#00ff99'],
+        // gradient
+        stroke: '#4a1850',
+        strokeThickness: 5,
+        dropShadow: true,
+        dropShadowColor: '#000000',
+        dropShadowBlur: 4,
+        dropShadowAngle: Math.PI / 6,
+        dropShadowDistance: 6,
+        wordWrap: true,
+        wordWrapWidth: this.width - 40
+      });
+      var text = new PIXI.Text(intro, textStyle);
+      text.buttonMode = true;
+      text.interactive = true;
+      text.x = 20;
+      text.y = 20;
+      this.app.stage.addChild(text);
       var me = this;
       var offset = 0;
       this.props.items.forEach(function (item) {
@@ -83,11 +109,11 @@ function (_React$Component) {
         g.interactive = true;
         g.buttonMode = true;
         g.beginFill(0xFF3300);
-        g.drawCircle(20 + offset, 20, 10);
+        g.drawCircle(30 + offset, me.height - 30, 20);
         g.endFill();
         g.on('pointerdown', me.onButtonDown).on('pointerup', me.onButtonUp).on('pointerupoutside', me.onButtonUp).on('pointerover', me.onButtonOver).on('pointerout', me.onButtonOut);
         me.app.stage.addChild(g);
-        offset += 30;
+        offset += 50;
       });
       document.addEventListener('keydown', this.handleKeyDown, false);
     }
@@ -114,8 +140,8 @@ function (_React$Component) {
           _this2.el = thisDiv;
         },
         style: {
-          width: '600px',
-          height: '800px'
+          width: this.width + 'px',
+          height: this.height + 'px'
         },
         onKeyPress: this.handleKeyDown
       });
