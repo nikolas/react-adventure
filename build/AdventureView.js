@@ -27,9 +27,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -48,12 +48,16 @@ function (_React$Component) {
     _classCallCheck(this, AdventureView);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(AdventureView).call(this, props));
+    _this.state = {
+      isPlaying: false
+    };
     _this.app = new PIXI.Application({
       antialias: true
     });
     _this.width = 800;
     _this.height = 600;
     _this.time = 0;
+    _this.onTitleClick = _this.onTitleClick.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -76,10 +80,43 @@ function (_React$Component) {
       console.log('mouseout', e);
     }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      console.log('this.el', this.el);
-      this.el.appendChild(this.app.view);
+    key: "onTitleClick",
+    value: function onTitleClick() {
+      console.log('setting state');
+      this.setState({
+        isPlaying: true
+      });
+    }
+  }, {
+    key: "setupTitleScreen",
+    value: function setupTitleScreen() {
+      var textStyle = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 24,
+        fontWeight: 'bold',
+        fill: ['#ffffff', '#00ff99'],
+        // gradient
+        stroke: '#4a1850',
+        strokeThickness: 5,
+        dropShadow: true,
+        dropShadowColor: '#000000',
+        dropShadowBlur: 4,
+        dropShadowAngle: Math.PI / 6,
+        dropShadowDistance: 6,
+        wordWrap: true,
+        wordWrapWidth: this.width - 40
+      });
+      var text = new PIXI.Text('Welcome to react-adventure', textStyle);
+      text.buttonMode = true;
+      text.interactive = true;
+      text.x = 20;
+      text.y = 20;
+      text.on('click', this.onTitleClick);
+      this.app.stage.addChild(text);
+    }
+  }, {
+    key: "setupSceneOne",
+    value: function setupSceneOne() {
       var textStyle = new PIXI.TextStyle({
         fontFamily: 'Arial',
         fontSize: 24,
@@ -104,7 +141,7 @@ function (_React$Component) {
       this.app.stage.addChild(text);
       var me = this;
       var offset = 0;
-      this.props.items.forEach(function (item) {
+      this.props.items.forEach(function () {
         var g = new PIXI.Graphics();
         g.interactive = true;
         g.buttonMode = true;
@@ -115,18 +152,39 @@ function (_React$Component) {
         me.app.stage.addChild(g);
         offset += 50;
       });
-      document.addEventListener('keydown', this.handleKeyDown, false);
     }
   }, {
-    key: "handleKeyDown",
-    value: function handleKeyDown(e) {}
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      console.log('this.el', this.el);
+      this.el.appendChild(this.app.view);
+      this.refreshScene();
+    }
+  }, {
+    key: "refreshScene",
+    value: function refreshScene() {
+      for (var i = this.app.stage.children.length - 1; i >= 0; i--) {
+        this.app.stage.removeChild(this.app.stage.children[i]);
+      }
+
+      if (!this.state.isPlaying) {
+        this.setupTitleScreen();
+      } else {
+        this.setupSceneOne();
+      }
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (this.state.isPlaying !== prevState.isPlaying) {
+        this.refreshScene();
+      }
+    }
   }, {
     key: "gameLoop",
     value: function gameLoop() {
-      var me = this;
-      setInterval(function () {
-        moveSomethingOnTheScreen(me.time);
-        time += 1;
+      setInterval(function () {//moveSomethingOnTheScreen(me.time);
+        //time += 1;
       }, 1000);
     }
   }, {
@@ -152,7 +210,6 @@ function (_React$Component) {
 }(_react["default"].Component);
 
 exports["default"] = AdventureView;
-;
 AdventureView.propTypes = {
   items: _propTypes["default"].array
 };

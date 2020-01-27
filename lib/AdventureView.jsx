@@ -10,6 +10,10 @@ export default class AdventureView extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            isPlaying: false
+        };
+
         this.app = new PIXI.Application({
             antialias: true
         });
@@ -18,6 +22,8 @@ export default class AdventureView extends React.Component {
         this.height = 600;
 
         this.time = 0;
+
+        this.onTitleClick = this.onTitleClick.bind(this);
     }
     onButtonDown() {
     }
@@ -30,10 +36,38 @@ export default class AdventureView extends React.Component {
     onButtonOut(e) {
         console.log('mouseout', e);
     }
-    componentDidMount() {
-        console.log('this.el', this.el);
-        this.el.appendChild(this.app.view);
+    onTitleClick() {
+        console.log('setting state');
+        this.setState({isPlaying: true});
+    }
+    setupTitleScreen() {
+        const textStyle = new PIXI.TextStyle({
+            fontFamily: 'Arial',
+            fontSize: 24,
+            fontWeight: 'bold',
+            fill: ['#ffffff', '#00ff99'], // gradient
+            stroke: '#4a1850',
+            strokeThickness: 5,
+            dropShadow: true,
+            dropShadowColor: '#000000',
+            dropShadowBlur: 4,
+            dropShadowAngle: Math.PI / 6,
+            dropShadowDistance: 6,
+            wordWrap: true,
+            wordWrapWidth: this.width - 40,
+        });
 
+        const text = new PIXI.Text('Welcome to react-adventure', textStyle);
+        text.buttonMode = true;
+        text.interactive = true;
+        text.x = 20;
+        text.y = 20;
+
+        text.on('click', this.onTitleClick);
+
+        this.app.stage.addChild(text);
+    }
+    setupSceneOne() {
         const textStyle = new PIXI.TextStyle({
             fontFamily: 'Arial',
             fontSize: 24,
@@ -76,10 +110,27 @@ export default class AdventureView extends React.Component {
             me.app.stage.addChild(g);
             offset += 50;
         });
-
-        document.addEventListener('keydown', this.handleKeyDown, false);
     }
-    handleKeyDown() {
+    componentDidMount() {
+        console.log('this.el', this.el);
+        this.el.appendChild(this.app.view);
+        this.refreshScene();
+    }
+    refreshScene() {
+        for (let i = this.app.stage.children.length - 1; i >= 0; i--) {
+            this.app.stage.removeChild(this.app.stage.children[i]);
+        }
+
+        if (!this.state.isPlaying) {
+            this.setupTitleScreen();
+        } else {
+            this.setupSceneOne();
+        }
+    }
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.isPlaying !== prevState.isPlaying) {
+            this.refreshScene();
+        }
     }
     gameLoop() {
         setInterval(function() {

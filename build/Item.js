@@ -58,7 +58,6 @@ function (_React$Component) {
 }(_react["default"].Component);
 
 exports["default"] = Item;
-;
 Item.propTypes = {
   name: _propTypes["default"].string,
   onClick: _propTypes["default"].func

@@ -6,8 +6,6 @@ var _reactDom = _interopRequireDefault(require("react-dom"));
 
 var _AdventureView = _interopRequireDefault(require("./AdventureView"));
 
-var _Item = _interopRequireDefault(require("./Item"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -46,10 +44,6 @@ function (_React$Component) {
   _createClass(Main, [{
     key: "render",
     value: function render() {
-      var click = function click(e) {
-        console.log(e.name);
-      };
-
       var items = [{
         name: 'A'
       }, {
@@ -69,9 +63,8 @@ function (_React$Component) {
     }
   }, {
     key: "handleItemClick",
-    value: function handleItemClick(event) {
-      var target = event.target;
-      var name = target.name;
+    value: function handleItemClick() {//const target = event.target;
+      //const name = target.name;
     }
   }]);
 
