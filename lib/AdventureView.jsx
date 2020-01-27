@@ -14,7 +14,6 @@ export default class AdventureView extends React.Component {
             isPlaying: false
         };
 
-
         this.width = 640;
         this.height = 480;
 
@@ -61,14 +60,20 @@ export default class AdventureView extends React.Component {
         });
 
         const text = new PIXI.Text('Welcome to react-adventure', textStyle);
-        text.buttonMode = true;
-        text.interactive = true;
         text.x = 20;
         text.y = 20;
 
-        text.on('click', this.onTitleClick);
-
         this.app.stage.addChild(text);
+
+        const startText = new PIXI.Text('Start', textStyle);
+        startText.buttonMode = true;
+        startText.interactive = true;
+        startText.x = (this.width / 2) - (startText.width / 2);
+        startText.y = this.height / 2;
+
+        startText.on('click', this.onTitleClick);
+
+        this.app.stage.addChild(startText);
     }
     setupSceneOne() {
         const textStyle = new PIXI.TextStyle({
