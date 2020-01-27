@@ -7,7 +7,7 @@
     "dev": "webpack --mode development --watch",
     "build": "babel lib -d build",
     "build-demo": "webpack --mode production",
-    "eslint": "eslint lib/*.js lib/*.jsx"
+    "eslint": "eslint lib/*.jsx"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,8 @@
     "@babel/preset-env": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
     "babel-loader": "^8.0.6",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.18.0",
     "prop-types": "^15.7.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"

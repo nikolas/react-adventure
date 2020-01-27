@@ -13,7 +13,7 @@ export default class Item extends React.Component {
             </div>
         );
     }
-};
+}
 
 Item.propTypes = {
     name: PropTypes.string,

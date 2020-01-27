@@ -60,7 +60,7 @@ export default class AdventureView extends React.Component {
 
         const me = this;
         let offset = 0;
-        this.props.items.forEach(function(item) {
+        this.props.items.forEach(function() {
             const g = new PIXI.Graphics();
             g.interactive = true;
             g.buttonMode = true;
@@ -79,15 +79,13 @@ export default class AdventureView extends React.Component {
 
         document.addEventListener('keydown', this.handleKeyDown, false);
     }
-    handleKeyDown(e) {
+    handleKeyDown() {
     }
     gameLoop() {
-        const me = this;
-
         setInterval(function() {
-            moveSomethingOnTheScreen(me.time);
+            //moveSomethingOnTheScreen(me.time);
 
-            time += 1;
+            //time += 1;
         }, 1000);
 
     }
@@ -103,7 +101,7 @@ export default class AdventureView extends React.Component {
             </div>
         );
     }
-};
+}
 
 AdventureView.propTypes = {
     items: PropTypes.array

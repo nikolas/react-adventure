@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AdventureView from './AdventureView';
-import Item from './Item';
 
 class Main extends React.Component {
     constructor(props) {
@@ -9,9 +8,6 @@ class Main extends React.Component {
         this.state = {};
     }
     render() {
-        const click = function(e) {
-            console.log(e.name);
-        };
         const items = [
             {
                 name: 'A'
@@ -37,9 +33,9 @@ class Main extends React.Component {
             </div>
         );
     }
-    handleItemClick(event) {
-        const target = event.target;
-        const name = target.name;
+    handleItemClick() {
+        //const target = event.target;
+        //const name = target.name;
     }
 }
 
