@@ -17,7 +17,6 @@ class Main extends React.Component {
             'pumkin spice coffee',
             'a santa hat',
             'a christmas tree',
-            'a game gear with the lion king game that\'s really hard!!!'
         ];
 
         return things[Math.floor(Math.random() * things.length)];
@@ -26,13 +25,12 @@ class Main extends React.Component {
         const click = function(e) {
             console.log(e.name);
         };
-        const items = [<Item key={0} />];
+        const items = [];
 
         for (let i = 0; i < 5; i++) {
-            items.push(
-                <Item key={i + 1} name={this.getRandomThing()}
-                      onClick={click} />
-            );
+            items.push({
+                name: this.getRandomThing()
+            });
         }
 
         return (

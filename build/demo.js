@@ -28,6 +28,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+var intro = ['You walk into the grocery store, and start craving German rye bread.'];
+
 var Main =
 /*#__PURE__*/
 function (_React$Component) {
@@ -39,42 +41,42 @@ function (_React$Component) {
     _classCallCheck(this, Main);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Main).call(this, props));
-    _this.state = {
-      moonPhase: -1
-    };
+    _this.state = {};
     return _this;
   }
 
   _createClass(Main, [{
+    key: "getRandomThing",
+    value: function getRandomThing() {
+      var things = ['pumkin spice coffee', 'a santa hat', 'a christmas tree'];
+      return things[Math.floor(Math.random() * things.length)];
+    }
+  }, {
     key: "render",
     value: function render() {
+      var click = function click(e) {
+        console.log(e.name);
+      };
+
+      var items = [];
+
+      for (var i = 0; i < 5; i++) {
+        items.push({
+          name: this.getRandomThing()
+        });
+      }
+
       return _react["default"].createElement("div", {
-        className: "col-sm-6"
-      }, _react["default"].createElement("div", {
-        className: "text-center"
-      }, _react["default"].createElement(_AdventureView["default"], null, _react["default"].createElement(_Item["default"], null))), _react["default"].createElement("input", {
-        type: "range",
-        className: "form-control-range",
-        name: "moonPhase",
-        min: -Math.PI,
-        max: Math.PI,
-        step: 0.01,
-        value: this.state.moonPhase,
-        onChange: this.handleInputChange.bind(this)
+        className: "col"
+      }, _react["default"].createElement(_AdventureView["default"], {
+        items: items
       }));
     }
   }, {
-    key: "handleInputChange",
-    value: function handleInputChange(event) {
+    key: "handleItemClick",
+    value: function handleItemClick(event) {
       var target = event.target;
       var name = target.name;
-    }
-  }, {
-    key: "onMoonPhaseUpdate",
-    value: function onMoonPhaseUpdate(phase) {
-      this.setState({
-        moonPhase: phase
-      });
     }
   }]);
 

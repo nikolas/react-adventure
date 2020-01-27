@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -41,11 +43,14 @@ function (_React$Component) {
   _createClass(Item, [{
     key: "render",
     value: function render() {
+      var w = 30;
+      var h = 30;
       return _react["default"].createElement("div", {
         className: "adv-item",
-        height: "20",
-        width: "20"
-      });
+        width: w,
+        height: h,
+        onClick: this.props.onClick
+      }, this.props.name);
     }
   }]);
 
@@ -54,3 +59,7 @@ function (_React$Component) {
 
 exports["default"] = Item;
 ;
+Item.propTypes = {
+  name: _propTypes["default"].string,
+  onClick: _propTypes["default"].func
+};

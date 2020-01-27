@@ -3,9 +3,17 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.Item = exports.SlideDisplay = exports.NextButton = exports.PrevButton = void 0;
+exports["default"] = exports.Item = void 0;
 
 var _react = _interopRequireDefault(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var PIXI = _interopRequireWildcard(require("pixi.js"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -27,137 +35,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var slides = [{
-  'img': 'img/1.png'
-}, {
-  'img': 'img/2.png'
-}, {
-  'img': 'img/3.png'
-}, {
-  'img': 'img/4.png'
-}, {
-  'img': 'img/51.png'
-}, {
-  'img': 'img/5.png'
-}, {
-  'img': 'img/6.png'
-}];
-
-var PrevButton =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(PrevButton, _React$Component);
-
-  function PrevButton() {
-    _classCallCheck(this, PrevButton);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(PrevButton).apply(this, arguments));
-  }
-
-  _createClass(PrevButton, [{
-    key: "render",
-    value: function render() {
-      var disabled = false;
-
-      if (this.props.slideshow.state.currentSlide <= 0) {
-        disabled = true;
-      }
-
-      return _react["default"].createElement("button", {
-        disabled: disabled,
-        className: "prev",
-        onClick: this.handleClick
-      }, disabled ? String.fromCharCode(8602) : String.fromCharCode(8612));
-    }
-  }, {
-    key: "handleClick",
-    value: function handleClick(e) {
-      this.props.slideshow.prevSlide();
-    }
-  }]);
-
-  return PrevButton;
-}(_react["default"].Component);
-
-exports.PrevButton = PrevButton;
-;
-
-var NextButton =
-/*#__PURE__*/
-function (_React$Component2) {
-  _inherits(NextButton, _React$Component2);
-
-  function NextButton() {
-    _classCallCheck(this, NextButton);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(NextButton).apply(this, arguments));
-  }
-
-  _createClass(NextButton, [{
-    key: "render",
-    value: function render() {
-      var disabled = false;
-
-      if (this.props.slideshow.state.currentSlide >= slides.length - 1) {
-        disabled = true;
-      }
-
-      return _react["default"].createElement("button", {
-        disabled: disabled,
-        className: "next",
-        onClick: this.handleClick
-      }, disabled ? String.fromCharCode(8603) : String.fromCharCode(8614));
-    }
-  }, {
-    key: "handleClick",
-    value: function handleClick(e) {
-      this.props.slideshow.nextSlide();
-    }
-  }]);
-
-  return NextButton;
-}(_react["default"].Component);
-
-exports.NextButton = NextButton;
-;
-
-var SlideDisplay =
-/*#__PURE__*/
-function (_React$Component3) {
-  _inherits(SlideDisplay, _React$Component3);
-
-  function SlideDisplay() {
-    _classCallCheck(this, SlideDisplay);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(SlideDisplay).apply(this, arguments));
-  }
-
-  _createClass(SlideDisplay, [{
-    key: "render",
-    value: function render() {
-      var slide = this.props.slides[this.props.currentSlide];
-      return _react["default"].createElement("div", {
-        className: "slide"
-      }, _react["default"].createElement("div", {
-        className: "img",
-        style: {
-          backgroundImage: 'url(' + slide.img + ')',
-          height: window.innerHeight
-        }
-      }));
-    }
-  }]);
-
-  return SlideDisplay;
-}(_react["default"].Component);
-
-exports.SlideDisplay = SlideDisplay;
-;
-
 var Item =
 /*#__PURE__*/
-function (_React$Component4) {
-  _inherits(Item, _React$Component4);
+function (_React$Component) {
+  _inherits(Item, _React$Component);
 
   function Item() {
     _classCallCheck(this, Item);
@@ -184,8 +65,8 @@ exports.Item = Item;
 
 var AdventureView =
 /*#__PURE__*/
-function (_React$Component5) {
-  _inherits(AdventureView, _React$Component5);
+function (_React$Component2) {
+  _inherits(AdventureView, _React$Component2);
 
   function AdventureView(props) {
     var _this;
@@ -193,57 +74,55 @@ function (_React$Component5) {
     _classCallCheck(this, AdventureView);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(AdventureView).call(this, props));
-    _this.state = {
-      currentSlide: 0
-    };
+    _this.app = new PIXI.Application({
+      antialias: true
+    });
+    _this.time = 0;
     return _this;
   }
 
   _createClass(AdventureView, [{
-    key: "prevSlide",
-    value: function prevSlide() {
-      var newSlide = this.state.currentSlide;
-
-      if (this.state['currentSlide'] > 0) {
-        newSlide = newSlide - 1;
-      }
-
-      this.setState({
-        'currentSlide': newSlide
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      console.log('this.el', this.el);
+      this.el.appendChild(this.app.view);
+      var me = this;
+      this.props.items.forEach(function (item) {
+        var g = new PIXI.Graphics();
+        g.interactive = true;
+        g.beginFill(0xFF3300);
+        g.drawCircle(Math.random() * 600, Math.random() * 800, Math.random() * 10);
+        g.endFill();
+        me.app.stage.addChild(g);
       });
-    }
-  }, {
-    key: "nextSlide",
-    value: function nextSlide() {
-      var newSlide = this.state.currentSlide;
-
-      if (this.state.currentSlide < slides.length - 1) {
-        newSlide = newSlide + 1;
-      }
-
-      this.setState({
-        'currentSlide': newSlide
-      });
-    }
-  }, {
-    key: "componentWillMount",
-    value: function componentWillMount() {
       document.addEventListener('keydown', this.handleKeyDown, false);
     }
   }, {
     key: "handleKeyDown",
-    value: function handleKeyDown(e) {
-      if (e.keyCode === 37) {
-        this.prevSlide();
-      } else if (e.keyCode === 39) {
-        this.nextSlide();
-      }
+    value: function handleKeyDown(e) {}
+  }, {
+    key: "gameLoop",
+    value: function gameLoop() {
+      var me = this;
+      setInterval(function () {
+        moveSomethingOnTheScreen(me.time);
+        time += 1;
+      }, 1000);
     }
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       return _react["default"].createElement("div", {
         className: "adventure",
+        ref: function ref(thisDiv) {
+          _this2.el = thisDiv;
+        },
+        style: {
+          width: '600px',
+          height: '800px'
+        },
         onKeyPress: this.handleKeyDown
       });
     }
@@ -254,3 +133,6 @@ function (_React$Component5) {
 
 exports["default"] = AdventureView;
 ;
+AdventureView.propTypes = {
+  items: _propTypes["default"].array
+};
