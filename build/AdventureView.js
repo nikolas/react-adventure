@@ -35,7 +35,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var intro = ['You walk into the grocery store, and start craving German rye bread.'];
+var intro = [];
 
 var AdventureView =
 /*#__PURE__*/
@@ -244,12 +244,13 @@ function (_React$Component) {
         wordWrap: true,
         wordWrapWidth: this.width - 40
       });
-      var text = new PIXI.Text(intro, textStyle);
+      /*const text = new PIXI.Text(intro, textStyle);
       text.buttonMode = true;
       text.interactive = true;
       text.x = 20;
       text.y = 20;
-      this.app.stage.addChild(text);
+       this.app.stage.addChild(text);*/
+
       var offset = 0;
       this.props.items.forEach(function () {
         var g = new PIXI.Graphics();
@@ -293,6 +294,12 @@ function (_React$Component) {
       //use the explorer's velocity to make it move
       this.explorer.x += this.explorer.vx;
       this.explorer.y += this.explorer.vy;
+      this.contain(this.explorer, {
+        x: 28,
+        y: 10,
+        width: this.width,
+        height: this.height
+      });
     }
   }, {
     key: "componentDidUpdate",
@@ -307,6 +314,37 @@ function (_React$Component) {
       setInterval(function () {//moveSomethingOnTheScreen(me.time);
         //time += 1;
       }, 1000);
+    }
+  }, {
+    key: "contain",
+    value: function contain(sprite, container) {
+      var collision = undefined; //Left
+
+      if (sprite.x < container.x) {
+        sprite.x = container.x;
+        collision = "left";
+      } //Top
+
+
+      if (sprite.y < container.y) {
+        sprite.y = container.y;
+        collision = "top";
+      } //Right
+
+
+      if (sprite.x + sprite.width > container.width) {
+        sprite.x = container.width - sprite.width;
+        collision = "right";
+      } //Bottom
+
+
+      if (sprite.y + sprite.height > container.height) {
+        sprite.y = container.height - sprite.height;
+        collision = "bottom";
+      } //Return the `collision` value
+
+
+      return collision;
     }
   }, {
     key: "render",
