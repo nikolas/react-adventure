@@ -164,7 +164,7 @@ function (_React$Component) {
       var _this2 = this;
 
       var me = this;
-      this.explorer = PIXI.Sprite.from('../img/explorer.png');
+      this.explorer = PIXI.Sprite.from('img/explorer.png');
       this.explorer.x = 68;
       this.explorer.y = this.height / 2 - this.explorer.height / 2;
       this.explorer.vx = 0;

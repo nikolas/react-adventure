@@ -114,7 +114,7 @@ export default class AdventureView extends React.Component {
     setupSceneOne() {
         const me = this;
 
-        this.explorer = PIXI.Sprite.from('../img/explorer.png');
+        this.explorer = PIXI.Sprite.from('img/explorer.png');
         this.explorer.x = 68;
         this.explorer.y = (this.height / 2) - (this.explorer.height / 2);
         this.explorer.vx = 0;
