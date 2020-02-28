@@ -76,6 +76,13 @@ export default class AdventureView extends React.Component {
         this.app.stage.addChild(startText);
     }
     setupSceneOne() {
+        const explorer = PIXI.Sprite.from('../img/explorer.png');
+        explorer.x = 68;
+        explorer.y = (this.height / 2) - (explorer.height / 2);
+        explorer.vx = 0;
+        explorer.vy = 0;
+        this.app.stage.addChild(explorer);
+
         const textStyle = new PIXI.TextStyle({
             fontFamily: 'Arial',
             fontSize: 24,
