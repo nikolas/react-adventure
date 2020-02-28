@@ -26,6 +26,7 @@ export default class AdventureView extends React.Component {
         this.time = 0;
 
         this.onTitleClick = this.onTitleClick.bind(this);
+        this.play = this.play.bind(this);
     }
     onButtonDown() {
     }
@@ -75,13 +76,110 @@ export default class AdventureView extends React.Component {
 
         this.app.stage.addChild(startText);
     }
+    //The `keyboard` helper function
+    keyboard(keyCode) {
+        var key = {};
+        key.code = keyCode;
+        key.isDown = false;
+        key.isUp = true;
+        key.press = undefined;
+        key.release = undefined;
+        //The `downHandler`
+        key.downHandler = function(event) {
+            if (event.keyCode === key.code) {
+                if (key.isUp && key.press) key.press();
+                key.isDown = true;
+                key.isUp = false;
+            }
+            event.preventDefault();
+        };
+
+        //The `upHandler`
+        key.upHandler = function(event) {
+            if (event.keyCode === key.code) {
+                if (key.isDown && key.release) key.release();
+                key.isDown = false;
+                key.isUp = true;
+            }
+            event.preventDefault();
+        };
+
+        //Attach event listeners
+        window.addEventListener(
+            "keydown", key.downHandler.bind(key), false
+        );
+        window.addEventListener(
+            "keyup", key.upHandler.bind(key), false
+        );
+        return key;
+    }
     setupSceneOne() {
-        const explorer = PIXI.Sprite.from('../img/explorer.png');
-        explorer.x = 68;
-        explorer.y = (this.height / 2) - (explorer.height / 2);
-        explorer.vx = 0;
-        explorer.vy = 0;
-        this.app.stage.addChild(explorer);
+        const me = this;
+
+        this.explorer = PIXI.Sprite.from('../img/explorer.png');
+        this.explorer.x = 68;
+        this.explorer.y = (this.height / 2) - (this.explorer.height / 2);
+        this.explorer.vx = 0;
+        this.explorer.vy = 0;
+        this.app.stage.addChild(this.explorer);
+
+        //Capture the keyboard arrow keys
+        let left = this.keyboard(37),
+            up = this.keyboard(38),
+            right = this.keyboard(39),
+            down = this.keyboard(40);
+
+        //Left arrow key `press` method
+        left.press = function() {
+
+            //Change the explorer's velocity when the key is pressed
+            me.explorer.vx = -5;
+            me.explorer.vy = 0;
+        };
+
+        //Left arrow key `release` method
+        left.release = function() {
+
+            //If the left arrow has been released, and the right arrow isn't down,
+            //and the explorer isn't moving vertically:
+            //Stop the explorer
+            if (!right.isDown && me.explorer.vy === 0) {
+                me.explorer.vx = 0;
+            }
+        };
+
+        //Up
+        up.press = function() {
+            me.explorer.vy = -5;
+            me.explorer.vx = 0;
+        };
+        up.release = function() {
+            if (!down.isDown && me.explorer.vx === 0) {
+                me.explorer.vy = 0;
+            }
+        };
+
+        //Right
+        right.press = function() {
+            me.explorer.vx = 5;
+            me.explorer.vy = 0;
+        };
+        right.release = function() {
+            if (!left.isDown && me.explorer.vy === 0) {
+                me.explorer.vx = 0;
+            }
+        };
+
+        //Down
+        down.press = function() {
+            me.explorer.vy = 5;
+            me.explorer.vx = 0;
+        };
+        down.release = function() {
+            if (!up.isDown && me.explorer.vx === 0) {
+                me.explorer.vy = 0;
+            }
+        };
 
         const textStyle = new PIXI.TextStyle({
             fontFamily: 'Arial',
@@ -107,7 +205,6 @@ export default class AdventureView extends React.Component {
 
         this.app.stage.addChild(text);
 
-        const me = this;
         let offset = 0;
         this.props.items.forEach(function() {
             const g = new PIXI.Graphics();
@@ -125,6 +222,8 @@ export default class AdventureView extends React.Component {
             me.app.stage.addChild(g);
             offset += 50;
         });
+
+        this.app.ticker.add(delta => this.play(delta));
     }
     componentDidMount() {
         console.log('this.el', this.el);
@@ -140,7 +239,13 @@ export default class AdventureView extends React.Component {
             this.setupTitleScreen();
         } else {
             this.setupSceneOne();
+            console.log('refresh');
         }
+    }
+    play(delta) {
+        //use the explorer's velocity to make it move
+        this.explorer.x += this.explorer.vx;
+        this.explorer.y += this.explorer.vy;
     }
     componentDidUpdate(prevProps, prevState) {
         if (this.state.isPlaying !== prevState.isPlaying) {

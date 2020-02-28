@@ -51,13 +51,16 @@ function (_React$Component) {
     _this.state = {
       isPlaying: false
     };
-    _this.app = new PIXI.Application({
-      antialias: true
-    });
     _this.width = 640;
     _this.height = 480;
+    _this.app = new PIXI.Application({
+      antialias: true,
+      width: _this.width,
+      height: _this.height
+    });
     _this.time = 0;
     _this.onTitleClick = _this.onTitleClick.bind(_assertThisInitialized(_this));
+    _this.play = _this.play.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -107,16 +110,124 @@ function (_React$Component) {
         wordWrapWidth: this.width - 40
       });
       var text = new PIXI.Text('Welcome to react-adventure', textStyle);
-      text.buttonMode = true;
-      text.interactive = true;
       text.x = 20;
       text.y = 20;
-      text.on('click', this.onTitleClick);
       this.app.stage.addChild(text);
+      var startText = new PIXI.Text('Start', textStyle);
+      startText.buttonMode = true;
+      startText.interactive = true;
+      startText.x = this.width / 2 - startText.width / 2;
+      startText.y = this.height / 2;
+      startText.on('click', this.onTitleClick);
+      this.app.stage.addChild(startText);
+    } //The `keyboard` helper function
+
+  }, {
+    key: "keyboard",
+    value: function keyboard(keyCode) {
+      var key = {};
+      key.code = keyCode;
+      key.isDown = false;
+      key.isUp = true;
+      key.press = undefined;
+      key.release = undefined; //The `downHandler`
+
+      key.downHandler = function (event) {
+        if (event.keyCode === key.code) {
+          if (key.isUp && key.press) key.press();
+          key.isDown = true;
+          key.isUp = false;
+        }
+
+        event.preventDefault();
+      }; //The `upHandler`
+
+
+      key.upHandler = function (event) {
+        if (event.keyCode === key.code) {
+          if (key.isDown && key.release) key.release();
+          key.isDown = false;
+          key.isUp = true;
+        }
+
+        event.preventDefault();
+      }; //Attach event listeners
+
+
+      window.addEventListener("keydown", key.downHandler.bind(key), false);
+      window.addEventListener("keyup", key.upHandler.bind(key), false);
+      return key;
     }
   }, {
     key: "setupSceneOne",
     value: function setupSceneOne() {
+      var _this2 = this;
+
+      var me = this;
+      this.explorer = PIXI.Sprite.from('../img/explorer.png');
+      this.explorer.x = 68;
+      this.explorer.y = this.height / 2 - this.explorer.height / 2;
+      this.explorer.vx = 0;
+      this.explorer.vy = 0;
+      this.app.stage.addChild(this.explorer); //Capture the keyboard arrow keys
+
+      var left = this.keyboard(37),
+          up = this.keyboard(38),
+          right = this.keyboard(39),
+          down = this.keyboard(40); //Left arrow key `press` method
+
+      left.press = function () {
+        //Change the explorer's velocity when the key is pressed
+        me.explorer.vx = -5;
+        me.explorer.vy = 0;
+      }; //Left arrow key `release` method
+
+
+      left.release = function () {
+        //If the left arrow has been released, and the right arrow isn't down,
+        //and the explorer isn't moving vertically:
+        //Stop the explorer
+        if (!right.isDown && me.explorer.vy === 0) {
+          me.explorer.vx = 0;
+        }
+      }; //Up
+
+
+      up.press = function () {
+        me.explorer.vy = -5;
+        me.explorer.vx = 0;
+      };
+
+      up.release = function () {
+        if (!down.isDown && me.explorer.vx === 0) {
+          me.explorer.vy = 0;
+        }
+      }; //Right
+
+
+      right.press = function () {
+        me.explorer.vx = 5;
+        me.explorer.vy = 0;
+      };
+
+      right.release = function () {
+        if (!left.isDown && me.explorer.vy === 0) {
+          me.explorer.vx = 0;
+        }
+      }; //Down
+
+
+      down.press = function () {
+        me.explorer.vy = 5;
+        me.explorer.vx = 0;
+      };
+
+      down.release = function () {
+        if (!up.isDown && me.explorer.vx === 0) {
+          me.explorer.vy = 0;
+        }
+      };
+
       var textStyle = new PIXI.TextStyle({
         fontFamily: 'Arial',
         fontSize: 24,
@@ -139,7 +250,6 @@ function (_React$Component) {
       text.x = 20;
       text.y = 20;
       this.app.stage.addChild(text);
-      var me = this;
       var offset = 0;
       this.props.items.forEach(function () {
         var g = new PIXI.Graphics();
@@ -151,6 +261,9 @@ function (_React$Component) {
         g.on('pointerdown', me.onButtonDown).on('pointerup', me.onButtonUp).on('pointerupoutside', me.onButtonUp).on('pointerover', me.onButtonOver).on('pointerout', me.onButtonOut);
         me.app.stage.addChild(g);
         offset += 50;
+      });
+      this.app.ticker.add(function (delta) {
+        return _this2.play(delta);
       });
     }
   }, {
@@ -171,7 +284,15 @@ function (_React$Component) {
         this.setupTitleScreen();
       } else {
         this.setupSceneOne();
+        console.log('refresh');
       }
+    }
+  }, {
+    key: "play",
+    value: function play(delta) {
+      //use the explorer's velocity to make it move
+      this.explorer.x += this.explorer.vx;
+      this.explorer.y += this.explorer.vy;
     }
   }, {
     key: "componentDidUpdate",
@@ -190,12 +311,12 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _react["default"].createElement("div", {
         className: "adventure",
         ref: function ref(thisDiv) {
-          _this2.el = thisDiv;
+          _this3.el = thisDiv;
         },
         style: {
           width: this.width + 'px',
